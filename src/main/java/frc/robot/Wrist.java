@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.MotorFeedbackSensor;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 
@@ -29,7 +30,7 @@ public class Wrist extends SubsystemBase {
   public Wrist(CANSparkMax rightMotor, CANSparkMax leftmotor) {
 
     pID = rightMotor.getPIDController();
-    pID.setFeedbackDevice(rightMotor.getAbsoluteEncoder());
+    pID.setFeedbackDevice(rightMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle));
     
     pID.setP(p);
     pID.setI(i);
