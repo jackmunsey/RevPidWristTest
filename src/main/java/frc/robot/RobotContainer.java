@@ -29,7 +29,7 @@ public class RobotContainer {
     rightMotor.setInverted(true);
     leftMotor.setInverted(false);
 
-    leftMotor.follow(rightMotor);
+    rightMotor.follow(leftMotor, true);
 
     this.mWrist = new Wrist(rightMotor, leftMotor);
 
@@ -39,7 +39,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    mXboxController.a().onTrue(Commands.run(() -> mWrist.setPoint(0.25), mWrist))
+    mXboxController.a().onTrue(Commands.run(() -> mWrist.setPoint(0.37), mWrist))
     .onFalse(Commands.runOnce(() -> mWrist.setPoint(0), mWrist));
   }
 
