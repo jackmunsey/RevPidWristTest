@@ -4,15 +4,44 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
+  private Wrist mWrist;
+  private CommandXboxController mXboxController;
+
   public RobotContainer() {
+    CANSparkMax leftMotor;
+    CANSparkMax rightMotor;
+    
+
+    leftMotor = new CANSparkMax(10, MotorType.kBrushless);
+    rightMotor = new CANSparkMax(11, MotorType.kBrushless);
+
+    rightMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
+    leftMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
+    rightMotor.setInverted(true);
+    leftMotor.setInverted(false);
+
+    rightMotor.follow(leftMotor, true);
+
+    this.mWrist = new Wrist(rightMotor, leftMotor);
+
+    mXboxController = new CommandXboxController(0);
+
     configureBindings();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    mXboxController.a().onTrue(Commands.run(() -> mWrist.setPoint(0.37), mWrist))
+    .onFalse(Commands.runOnce(() -> mWrist.setPoint(0), mWrist));
+  }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
